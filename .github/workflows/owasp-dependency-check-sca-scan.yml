@@ -1,4 +1,4 @@
-# Name of the GitHub Actions workflow
+# Name of the GitHub Actions workfloww
 name: Scan with OWASP Dependency Check
 
 on:
