@@ -3,7 +3,7 @@ on:
     branches:
     - main
     paths:
-    - .github/workflows/semgrep.yml #Adding a small comment by Bharathuuu.
+    - .github/workflows/semgrep.yml #Adding a small comment by Bharathuuu something.
 name: Semgrep
 jobs:
   semgrep:
