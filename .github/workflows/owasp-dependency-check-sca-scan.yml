@@ -12,7 +12,7 @@ jobs:
   depchecktest:
     name: Scan with OWASP Dependency Check
 
-    runs-on: [ 'ubuntu-latest' ] # Use the latest version of Ubuntuuuu
+    runs-on: [ 'ubuntu-latest' ] # Use the latest version of Ubuntuuuu something
 
     permissions:
       actions: read
