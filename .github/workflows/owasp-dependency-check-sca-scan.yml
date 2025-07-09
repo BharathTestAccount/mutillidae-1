@@ -6,6 +6,7 @@ on:
   push:
     branches: ["main"]
 
+
 # Define the job(s) to be executed within the workflow
 jobs:
   depchecktest:
@@ -33,6 +34,7 @@ jobs:
           args: >
             --enableRetired # Additional scan arguments for Dependency Check
         continue-on-error: true
+
 
       - name: Commit CSV report to main branch
         run: |
