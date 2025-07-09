@@ -1,25 +1,41 @@
 name: DAST Scan with Dastardly
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - '**'
 
 jobs:
   dastardly-scan:
     runs-on: ubuntu-latest
     name: Run DAST scan with Dastardly
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
-      - name: Run Dastardly against ginandjuice.shop
-        run: |
-          docker run --rm \
-            -v $(pwd)/dast-reports:/home/dastardly/.dastardly \
-            public.ecr.aws/portswigger/dastardly \
-            https://ginandjuice.shop
-
-      - name: Upload Dastardly scan report
-        uses: actions/upload-artifact@v3
         with:
-          name: dastardly-report
-          path: dast-reports
+          ref: main  # always checkout main to commit report
+
+      - name: Set up Git config
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+
+      - name: Run Dastardly scan on ginandjuice.shop
+        run: |
+          mkdir -p dastardly-results
+          docker run --rm \
+            -v $(pwd)/dastardly-results:/home/dastardly/.dastardly \
+            public.ecr.aws/portswigger/dastardly \
+            https://www.ginandjuice.shop
+
+      - name: Commit and push results to main
+        run: |
+          cd dastardly-results
+          if [ -n "$(git status --porcelain)" ]; then
+            cd ..
+            git add dastardly-results
+            git commit -m "Dastardly scan results for https://www.ginandjuice.shop"
+            git push origin main
+          else
+            echo "No new results to commit"
