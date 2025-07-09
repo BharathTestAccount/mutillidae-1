@@ -1,0 +1,25 @@
+name: DAST Scan with Dastardly
+
+on:
+  workflow_dispatch:
+
+jobs:
+  dastardly-scan:
+    runs-on: ubuntu-latest
+    name: Run DAST scan with Dastardly
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Run Dastardly against ginandjuice.shop
+        run: |
+          docker run --rm \
+            -v $(pwd)/dast-reports:/home/dastardly/.dastardly \
+            public.ecr.aws/portswigger/dastardly \
+            https://ginandjuice.shop
+
+      - name: Upload Dastardly scan report
+        uses: actions/upload-artifact@v3
+        with:
+          name: dastardly-report
+          path: dast-reports
